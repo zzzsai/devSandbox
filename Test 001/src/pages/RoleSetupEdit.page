@@ -1,0 +1,77 @@
+<apex:page standardController="RoleSetup__c">
+   
+     <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/FinalCalenderScript.js')}"/> 
+     <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/dom-event.js')}"/>
+
+     <apex:stylesheet value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/Img/globalcss.css')}"/>
+     
+    <apex:sectionHeader title="Role Setup Edit" subtitle="New Role Setup"/>
+
+  <apex:form >
+    <apex:pageblock title="Role Detail" mode="edit"> 
+         <apex:pageBlockButtons >
+             <apex:commandButton value="Save" action="{!save}"/>         
+             <apex:commandButton value="Cancel" action="{!cancel}"/>
+         </apex:pageBlockButtons>
+    
+    <apex:pageBlockSection collapsible="false" title="Information" >
+
+      <apex:inputField value="{!RoleSetup__c.Role__c}" required="true"/><br/>      
+      <apex:inputField value="{!RoleSetup__c.Name}" required="true"/><br/>   
+      <!--<apex:inputField value="{!RoleSetup__c.Resource__c}" required="false"/><br/>-->
+      <apex:inputField value="{!RoleSetup__c.No_of_Resources__c}" required="true"/><br/>
+      <apex:inputField value="{!RoleSetup__c.Capacity__c}" required="true"/><br/>
+      <apex:inputField value="{!RoleSetup__c.Onshore_Offshore__c}" required="true"/><br/> 
+      
+                             
+          
+                     <apex:inputField value="{!RoleSetup__c.Start_Date__c}" id="startDate"/>
+                         
+                      <apex:image style="position:relative;top:-1px;left:-128px;cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObj.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'"
+                                  id="calendrIcon"/>  
+                    
+                      <apex:inputField value="{!RoleSetup__c.End_Date__c}" id="EndDate"/>
+  <!-- Script for MultiCalender Functionality-->
+            
+  <script> 
+   
+   var pCalendarObj = null;
+   var calLocation = "548,95";
+       pCalendarObj = new multiDisplayCalendar("corpHomeCalendar", fnGetDate1, fnGetDate2, fnSetInfoToFields);
+
+   var startDate = document.getElementById("{!$Component.startDate}");
+   var EndDate = document.getElementById("{!$Component.EndDate}");
+ 
+   function fnSetInfoToFields(pCIDate, pCODate){
+         var startDate = document.getElementById("{!$Component.startDate}");
+         var EndDate = document.getElementById("{!$Component.EndDate}");
+        
+        startDate.value  = getFormatedDate("en", pCIDate);
+        EndDate.value    = getFormatedDate("en", pCODate);
+        
+        //alert("Start Date =" + startDate.value +"\n"+"End Date =" +EndDate.value);   
+    } 
+    function fnGetDate1() {
+          var startDate = document.getElementById("{!$Component.startDate}");
+          return setDateFromString("en", startDate.value);
+    }
+    function fnGetDate2() {          
+        var EndDate = document.getElementById("{!$Component.EndDate}");
+        return setDateFromString("en", EndDate.value);
+    }
+    
+ </script> 
+ 
+      </apex:pageBlockSection>
+            <apex:pageBlockSection title="Skill Information" columns="2">
+                <apex:inputField value="{!RoleSetup__c.Expert_Skill_Area__c}" required="true" />
+                <apex:inputField value="{!RoleSetup__c.Expert_Skills__c}"/>
+                <apex:inputField value="{!RoleSetup__c.Secondary_Skill_Area__c}" required="true"/>
+                <apex:inputField value="{!RoleSetup__c.Secondary_Skills__c}"/>   
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

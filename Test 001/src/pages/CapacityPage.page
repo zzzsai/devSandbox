@@ -1,0 +1,68 @@
+<apex:page standardController="Capacity__c" extensions="Capacity" label="Identified Requirements for the Release" sidebar="true"  >  
+<style> body { background-color:#EAEAE1; } </style>     
+<apex:form > 
+<!-- <apex:detail relatedList="false" title="true"/> -->
+    <!-- <apex:pageBlock title="Release Output">     -->
+    <apex:pageBlock >   
+        <!-- <apex:pageBlockSection columns="1" collapsible="false"  >
+            <apex:pageblockSectionItem >
+                <apex:commandButton value="Edit Scope" action="{!editScope}" style="position:relative; left:45%;"/> 
+            </apex:pageblockSectionItem>                
+        </apex:pageBlockSection>       -->
+        <apex:pageBlockSection columns="1" collapsible="false" rendered="{!CapAvailable}" >
+            <apex:pageBlockTable value="{!VarRequirement}" var="item" >
+                <apex:column width="20%"> 
+                    <apex:facet name="header"> <center> Requirements </center> </apex:facet>
+                     <apex:outputText ><center>{!item.Requirement_id__r.Requirement_id__r.Requirement_Title__c}</center></apex:outputText> 
+                     <apex:facet name="footer"><center>Total (In Days)</center></apex:facet>
+                </apex:column> 
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> Plan </center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Plan__c}</center></apex:outputText> 
+                    <apex:facet name="footer"><center>{!TotalPlan }</center></apex:facet>
+                </apex:column>             
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> Design </center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Design__c}</center></apex:outputText>
+                    <apex:facet name="footer"><center>{!TotalDesign }</center></apex:facet>                
+                </apex:column>            
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> Build</center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Build__c}</center></apex:outputText> 
+                    <apex:facet name="footer"><center>{!TotalBuild }</center></apex:facet>
+                </apex:column>                                      
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> Test </center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Test__c}</center></apex:outputText> 
+                    <apex:facet name="footer"><center>{!TotalTest }</center></apex:facet>
+                </apex:column>              
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> UAT </center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.UAT__c}</center></apex:outputText>                 <apex:facet name="footer"><center>{!TotalUAT }</center></apex:facet>
+                </apex:column>                
+                <apex:column width="10%"> 
+                    <apex:facet name="header"> <center> Deploy </center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Deploy__c}</center></apex:outputText> 
+                    <apex:facet name="footer"><center>{!TotalDeploy }</center></apex:facet>
+                </apex:column> 
+                <apex:column width="10%">              
+                    <apex:facet name="header"> <center> Adapt</center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Adapt_and_Ongoing_Support__c }</center></apex:outputText>
+                    <apex:facet name="footer"><center>{!TotalAdapt }</center></apex:facet>
+                </apex:column>            
+                <apex:column width="10%">              
+                    <apex:facet name="header"> <center> Total</center> </apex:facet>
+                    <apex:outputText ><center>{!item.Requirement_Id__r.Row_Total__c}</center></apex:outputText>  
+                    <apex:facet name="footer"><center>{!TotalTotal }</center></apex:facet>
+                </apex:column>             
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" collapsible="false" rendered="{!(NOT(CapAvailable))}" >
+            <apex:outputText style="font-weight=Bold; text-align:center" >
+                <center> <b> {!outputStr}</b> </center>
+            </apex:outputText>
+        </apex:pageBlockSection>  
+    
+    </apex:pageBlock>  
+</apex:form>     
+</apex:page><!--PMT2009__ 10 occurences replaced by blank-->

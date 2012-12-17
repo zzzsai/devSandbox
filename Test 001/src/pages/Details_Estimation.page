@@ -1,0 +1,159 @@
+<apex:page controller="detailestimator" id="pageid" tabstyle="Release_Estimation__c" >
+<apex:sectionHeader title="Requirement Details"/>
+<style>
+         .even{
+                 background-color: #FFFFFF;
+                 text-align: center;
+                 vertical-align: middle;
+                 }
+            .header{
+                
+                text-align: center;
+                vertical-align: middle;
+                color: #FFFFFF;
+                cellspacing: 2;
+                background-color:#FFCCCC;
+            }
+            .footer{
+                align: center;
+                vertical-align: middle;        
+                font-weight: bold;
+                cellpadding: 5;
+                background-color: #99CCCC ;
+                border-color: #A4A4A4;
+            }
+</style> 
+
+<apex:form id="frm">
+    <apex:pageblock id="blockid" >
+    <apex:pageblockSection collapsible="false" title="Estimate Name" >
+        <apex:outputField value="{!EstimateName.Name}" id="estimateName"/>
+      
+    </apex:pageblockSection>
+       
+   <apex:pageblockSection title="Create Estimate" columns="1"  collapsible="false" >
+    <apex:messages id="ErrMsg" style="color:red" />
+   </apex:pageblockSection>
+   <table border='0' width="100%" height="100%">
+   <tr ><td>
+       <table border='0'width="40%" height="100%">
+         <tr class="header">
+                  <td colspan="2" width="5%" height="10" align="center">
+                     <b><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Requirements&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></b>
+                  </td>                  
+              </tr>
+              <tr  class="header">
+                  <td width="4%" align="center" height="30"><p>Requirement</p></td>
+             </tr>
+              
+       </table></td>
+       <td> 
+       <table border="0" width="40%" height="100%">
+              <tr class="footer">
+              <td colspan="1" align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comments&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br></br></td>
+              <td colspan="1" align="center">Contingency</td>
+              <td colspan="2" align="center">(1) Configuration Ratings</td>
+              <td colspan="2" align="center">(2) Workflow and Approval Ratings</td>
+              <td colspan="2" align="center">(3) User Administartion Rating</td>
+              <td colspan="2" align="center">(4) Report and Dashboard Ratings</td>
+              <td colspan="2" align="center">(5) Customization Ratings</td>
+              <td colspan="2" align="center">(6) Data Migration Ratings</td>
+              <td colspan="2" align="center">(7) Integration (Batch) Ratings</td>
+              <td colspan="2" align="center">(8) Integration (Real-Time) Ratings</td>
+              </tr>
+              <tr class="footer">
+              <td colspan="1" align="center"><p>Enter Comments</p></td>
+              <td colspan="1" align="center"><p>Enter %</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+              <td colspan="1" align="center"><p>Complexity Rating</p></td>
+              <td colspan="1" align="center"><p>Enter # of Components</p></td>
+           </tr>
+        </table></td>  
+    </tr>
+    </table> 
+   
+    <table id="mytable1" border="0" width="100%" height="100%">
+        <apex:repeat value="{!EstReqDetail}" var="lsRow">
+            <tbody>
+            <tr>
+            <td colspan="1" width="40%" height="50%">
+             <apex:outputLabel value="{!lsRow.Requirement_id__r.Requirement_Title__c}"></apex:outputLabel> 
+            </td>
+             <td  align="left" colspan="1">
+            <apex:inputtext size="17" id="row_1_comments" value="{!lsRow.Comments__c}"/>
+            </td>
+            <td width="3%" align="center" colspan="1">
+            <apex:inputtext size="7" id="row_1_contingency" value="{!lsRow.Contingency__c}"/>
+            </td>
+            <td width="2%" align="left" colspan="2"> 
+            <apex:inputField id="row_1_configcomplex" value="{!lsRow.Config_complex__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_configcomp"  value="{!lsRow.Config_Component__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_workcomplex"  value="{!lsRow.Workflow_Complex__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_workcomp"  value="{!lsRow.Workflow_Component__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_usercomplex"  value="{!lsRow.User_complexity__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_usercomp"  value="{!lsRow.User_Comp__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_reportcomplex"  value="{!lsRow.Report_Complexity__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_reportcomp"  value="{!lsRow.Report_Component__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_customcomplex"  value="{!lsRow.Custom_Complexity__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_customcomp"  value="{!lsRow.Custom_Component__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_datacomplex"  value="{!lsRow.Data_Complex__c}"/>
+            </td>
+            <td width="3%">
+            <apex:inputtext size="5" id="row_1_datacomp"  value="{!lsRow.Data_comp__c}"/>
+            </td>
+            <td width="2%" align="center">
+            <apex:inputField id="row_1_batchcomplex" value="{!lsRow.Batch_Complex__c}"/>
+            </td>
+            <td width="3%"align="center">
+            <apex:inputtext size="5" id="row_1_batchcomp"  value="{!lsRow.Batch_comp__c}"/>
+            </td>
+            <td width="2%">
+            <apex:inputField id="row_1_realcomplex" value="{!lsRow.Real_Complex__c}"/>
+            </td>
+            <td width="3%" align="center">
+            <apex:inputtext size="5" id="row_1_realcomp" value="{!lsRow.Real_Comp__c}"/>
+            </td>
+           </tr> 
+           </tbody>
+       </apex:repeat>
+    </table>
+    <apex:commandButton value="Add Requirements" action="{!addReq}"/>
+    <apex:commandButton value="Save Changes" action="{!saveEstimate}" />
+    <apex:commandButton value="Cancel" action="{!gotoPreviousPage}"/>
+        
+</apex:pageblock>
+</apex:form>
+</apex:page><!--PMT2009__ 1 occurences replaced by blank-->

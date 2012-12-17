@@ -1,0 +1,405 @@
+<apex:page standardController="Project_Phase__c" extensions="Project_Phase_Ext" id="thisPage">
+     <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/FinalCalenderScript.js')}"/> 
+     <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/dom-event.js')}"/>
+     <apex:stylesheet value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/Img/globalcss.css')}"/>
+     <apex:includeScript value="{!URLFOR($Resource.AlertSaaSPMO, 'AlertSaaSPMO/customAlertBox.js')}"/>
+     <apex:stylesheet value="{!URLFOR($Resource.AlertSaaSPMO, 'AlertSaaSPMO/Alert_css.css')}"/> 
+ 
+     <apex:sectionHeader title="Project Releases Overview"/>
+           <script>
+                function editFocus(){
+                //editfocusArea();
+                }
+           </script>
+     <apex:form >
+     <!--<apex:actionFunction name="editfocusArea"  action="{!setFocusArea}"/> -->
+     <apex:pageblock title="Project Release Setup"> 
+         <apex:pageBlockButtons >
+             <apex:commandButton value="Save" action="{!save}"/>         
+             <apex:commandButton value="Cancel" action="{!cancel}"/>                
+         </apex:pageBlockButtons>
+    
+     <apex:pageBlockSection collapsible="false" title="Project Release Detail" columns="1">
+     <apex:pageblockSectionItem >
+          <apex:outputLabel value="Release:" for="release"/>
+          <apex:outputPanel styleClass="requiredInput" layout="block">
+          <apex:outputPanel styleClass="requiredBlock" layout="block"/> 
+          <apex:selectList value="{!release}" size="1" id="release">
+          <apex:selectOptions value="{!releases}"/>
+          <apex:actionSupport event="onchange" action="{!setRelease}" rerender="estimates"/>
+          </apex:selectList>
+          </apex:outputPanel>
+        </apex:pageblockSectionItem>
+
+     
+     <apex:pageblockSectionItem >
+          <apex:outputLabel value="Estimate:" for="estimates"/>
+           <apex:outputPanel styleClass="requiredInput" layout="block">
+             <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                <apex:selectList value="{!estimate}" size="1" id="estimates" disabled="{!ISNULL(release)}">
+                   <apex:selectOptions value="{!estimates}"/>
+                   <apex:actionSupport event="onchange" action="{!setEstimate}"/>
+                </apex:selectList>
+             </apex:outputPanel>
+        </apex:pageblockSectionItem>
+
+                         
+                 <!-- <apex:inputField value="{!Project_Phase__c.Focus_Area__c}" required="true"/>-->
+                  <!-- <apex:inputField value="{!Project_Phase__c.Related_Estimate__c}"/> -->
+                  <apex:inputField value="{!Project_Phase__c.Capacity__c}"/>
+              </apex:pageBlockSection>  
+    <apex:pageBlockSection collapsible="false" title="Project Phase Dates" columns="1">
+               <apex:panelGrid columns="4" id="Grid" bgcolor="#D6D6C2" border="1" width="100%" 
+                captionStyle="word-spacing:100px;background-color:#D6D6C2;">
+                <apex:facet name="caption"><B> <span style="word-spacing:3px;"> Start Date </span> &nbsp; 
+                <span style="word-spacing:3px;position:relative;left:70px;top:1px"> End Date </span></B>
+              </apex:facet>
+              <B> Plan :</B>
+                      
+                      <apex:inputField value="{!Project_Phase__c.Plan_Start_Date__c}" id="startDatePlan"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjPlan.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+                    
+                      <apex:inputField value="{!Project_Phase__c.Plan_End_Date__c}" id="EndDatePlan"/>
+             
+           <B> Design :</B>       
+             <apex:inputField value="{!Project_Phase__c.Design_Start_Date__c}" id="startDateDesign"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjDesign.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+
+                      <apex:inputField value="{!Project_Phase__c.Design_End_Date__c}" id="EndDateDesign"/>
+           <B> Build :</B> 
+             <apex:inputField value="{!Project_Phase__c.Build_Start_Date__c}" id="startDateBuild"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjBuild.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+                     
+                      <apex:inputField value="{!Project_Phase__c.Build_End_Date__c}" id="EndDateBuild"/>
+
+             <B> Test :</B>
+             <apex:inputField value="{!Project_Phase__c.Test_Start_Date__c}" id="startDateTest"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjTest.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+                    
+                      <apex:inputField value="{!Project_Phase__c.Test_End_Date__c}" id="EndDateTest"/>
+
+             <B> UAT :</B>
+             <apex:inputField value="{!Project_Phase__c.UAT_Start_Date__c}" id="startDateUAT"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjUAT.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+                    
+                      <apex:inputField value="{!Project_Phase__c.UAT_End_Date__c}" id="EndDateUAT"/>
+             <B> Deploy :</B>
+                     <apex:inputField value="{!Project_Phase__c.Deploy_Start_Date__c}" id="startDateDeploy"/>
+                     <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjDeploy.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+ 
+                     <apex:inputField value="{!Project_Phase__c.Deploy_End_Date__c}" id="EndDateDeploy"/>
+
+            <B> Adapt and<br/> Ongoing Support :</B>
+            <apex:inputField value="{!Project_Phase__c.AOS_Start_Date__c}" id="startDateAOS"/>
+                         
+                      <apex:image style="cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObjAOS.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'" />
+  
+                    
+                      <apex:inputField value="{!Project_Phase__c.AOS_End_Date__c}" id="EndDateAOS"/>
+
+     </apex:panelGrid>  
+
+<!-- Script for MultiCalender Functionality-->
+ 
+ <script> 
+   
+   var calLocation = "548,95";    
+   var pCalendarObjPlan = new multiDisplayCalendar("corpHomeCalendarPlan", fnGetSDate_Plan, fnGetEDate_Plan, fnSetInfoToFields_Plan);
+   var pCalendarObjDesign = new multiDisplayCalendar("corpHomeCalendarDesign", fnGetSDate_Design, fnGetEDate_Design, fnSetInfoToFields_Design);    
+   var pCalendarObjBuild = new multiDisplayCalendar("corpHomeCalendarBuild", fnGetDate_Build, fnGetDate_Build, fnSetInfoToFields_Build);    
+   var pCalendarObjTest = new multiDisplayCalendar("corpHomeCalendarTest", fnGetDate_Test, fnGetDate_Test, fnSetInfoToFields_Test);    
+   var pCalendarObjUAT = new multiDisplayCalendar("corpHomeCalendarUAT", fnGetDate_UAT, fnGetDate_UAT, fnSetInfoToFields_UAT);    
+   var pCalendarObjDeploy = new multiDisplayCalendar("corpHomeCalendarDeploy", fnGetDate_Deploy, fnGetDate_Deploy, fnSetInfoToFields_Deploy);    
+   var pCalendarObjAOS = new multiDisplayCalendar("corpHomeCalendarAOS", fnGetDate_AOS, fnGetDate_AOS, fnSetInfoToFields_AOS);    
+    
+ 
+    
+    
+    // For Adapt and Ongoing Support  ...
+    
+    function fnSetInfoToFields_AOS(pCIDateAOS , pCODateAOS){
+         var startDateAOS = document.getElementById("{!$Component.startDateAOS}");
+         var EndDateAOS   = document.getElementById("{!$Component.EndDateAOS}");
+        
+             startDateAOS.value  = getFormatedDate("en", pCIDateAOS);
+             EndDateAOS.value    = getFormatedDate("en", pCODateAOS);  
+    } 
+    function fnGetDate_AOS() {
+          var startDateAOS = document.getElementById("{!$Component.startDateAOS}");
+          return setDateFromString("en", startDateAOS.value);
+    }
+    function fnGetDate_AOS() {          
+        var EndDateAOS = document.getElementById("{!$Component.EndDateAOS}");
+        return setDateFromString("en", EndDateAOS.value);
+    } 
+
+ 
+ 
+    
+    // For Deploy ...
+    function fnSetInfoToFields_Deploy (pCIDateDeploy , pCODateDeploy){
+         var startDateDeploy = document.getElementById("{!$Component.startDateDeploy}");
+         var EndDateDeploy= document.getElementById("{!$Component.EndDateDeploy}");
+        
+             startDateDeploy.value  = getFormatedDate("en", pCIDateDeploy);
+             EndDateDeploy.value    = getFormatedDate("en", pCODateDeploy);  
+    } 
+    function fnGetDate_Deploy() {
+          var startDateDeploy = document.getElementById("{!$Component.startDateDeploy}");
+          return setDateFromString("en", startDateDeploy.value);
+    }
+    function fnGetDate_Deploy() {          
+        var EndDateDeploy = document.getElementById("{!$Component.EndDateDeploy}");
+        return setDateFromString("en", EndDateDeploy.value);
+    } 
+
+    
+      // For UAT...
+    function fnSetInfoToFields_UAT(pCIDateUAT, pCODateUAT){
+         var startDateUAT = document.getElementById("{!$Component.startDateUAT}");
+         var EndDateUAT= document.getElementById("{!$Component.EndDateUAT}");
+        
+             startDateUAT.value  = getFormatedDate("en", pCIDateUAT);
+             EndDateUAT.value    = getFormatedDate("en", pCODateUAT);  
+    } 
+    function fnGetDate_UAT() {
+          var startDateUAT = document.getElementById("{!$Component.startDateUAT}");
+          return setDateFromString("en", startDateUAT.value);
+    }
+    function fnGetDate_UAT() {          
+        var EndDateUAT = document.getElementById("{!$Component.EndDateUAT}");
+        return setDateFromString("en", EndDateUAT.value);
+    } 
+     
+     // For Test...
+    function fnSetInfoToFields_Test(pCIDateTest, pCODateTest){
+         var startDateTest = document.getElementById("{!$Component.startDateTest}");
+         var EndDateTest= document.getElementById("{!$Component.EndDateTest}");
+        
+             startDateTest.value  = getFormatedDate("en", pCIDateTest);
+             EndDateTest.value    = getFormatedDate("en", pCODateTest);  
+    } 
+    function fnGetDate_Test() {
+          var startDateTest = document.getElementById("{!$Component.startDateTest}");
+          return setDateFromString("en", startDateTest.value);
+    }
+    function fnGetDate_Test() {          
+        var EndDateTest = document.getElementById("{!$Component.EndDateTest}");
+        return setDateFromString("en", EndDateTest.value);
+    }
+    
+    
+     // For Build...
+    function fnSetInfoToFields_Build(pCIDateBuild, pCODateBuild){
+         var startDateBuild = document.getElementById("{!$Component.startDateBuild}");
+         var EndDateBuild = document.getElementById("{!$Component.EndDateBuild}");
+        
+             startDateBuild.value  = getFormatedDate("en", pCIDateBuild);
+             EndDateBuild.value    = getFormatedDate("en", pCODateBuild);  
+    } 
+    function fnGetDate_Build() {
+          var startDateBuild = document.getElementById("{!$Component.startDateBuild}");
+          return setDateFromString("en", startDateBuild.value);
+    }
+    function fnGetDate_Build() {          
+        var EndDateBuild = document.getElementById("{!$Component.EndDateBuild}");
+        return setDateFromString("en", EndDateBuild.value);
+    }
+   
+    // For Design...
+    function fnSetInfoToFields_Design(pCIDateDesign, pCODateDesign){
+         var startDateDesign = document.getElementById("{!$Component.startDateDesign}");
+         var EndDateDesign = document.getElementById("{!$Component.EndDateDesign}");
+        
+             startDateDesign.value  = getFormatedDate("en", pCIDateDesign);
+             EndDateDesign.value    = getFormatedDate("en", pCODateDesign);  
+    } 
+    function fnGetSDate_Design() {
+          var startDateDesign = document.getElementById("{!$Component.startDateDesign}");
+          return setDateFromString("en", startDateDesign.value);
+    }
+    function fnGetEDate_Design() {          
+        var EndDateDesign = document.getElementById("{!$Component.EndDateDesign}");
+        return setDateFromString("en", EndDateDesign.value);
+    }
+    
+          
+    // functions For Plan....   
+    function fnSetInfoToFields_Plan(pCIDatePlan, pCODatePlan){
+         var startDatePlan = document.getElementById("{!$Component.startDatePlan}");
+         var EndDatePlan = document.getElementById("{!$Component.EndDatePlan}");
+        
+             startDatePlan.value  = getFormatedDate("en", pCIDatePlan);
+             EndDatePlan.value    = getFormatedDate("en", pCODatePlan);
+    } 
+    function fnGetSDate_Plan() {
+          var startDatePlan = document.getElementById("{!$Component.startDatePlan}");
+          return setDateFromString("en", startDatePlan.value);
+    }
+    function fnGetEDate_Plan() {          
+        var EndDatePlan = document.getElementById("{!$Component.EndDatePlan}");
+        return setDateFromString("en", EndDatePlan.value);
+    }
+    
+   document.getElementById("{!$Component.startDatePlan}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                            while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDatePlan}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                            while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                             while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+document.getElementById("{!$Component.startDateDesign}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                            while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDateDesign}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   document.getElementById("{!$Component.startDateBuild}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDateBuild}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.startDateTest}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){   
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");                             
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDateTest}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                     } 
+             }  
+ </script>             
+</apex:pageBlockSection>
+</apex:pageblock>
+</apex:form>   
+</apex:page>

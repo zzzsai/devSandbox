@@ -1,0 +1,330 @@
+<apex:page controller="clsListPermissions" showHeader="false">
+
+    <style type="text/css">
+                
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            font-size: 1.1em;
+        }
+        
+        th {
+            background: #3e83c9;
+            color: #fff;
+            font-weight: bold;
+            padding: 2px 11px;
+            text-align: left;
+            border-right: 1px solid #fff;
+            line-height: 1.2;
+        }
+        
+        td {
+            padding: 6px 11px;
+
+            vertical-align: top;
+        }
+        
+        tr.alt td {
+            background: #ecf6fc;
+        }
+        
+        
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.JQuery_Plugins, 'media/JS/jquery.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.JQuery_Plugins, 'media/JS/table2CSV.js')}"/> 
+
+
+    <apex:pageMessages />
+
+    <apex:form id="frm">
+    
+        <apex:pageBlock title="Profile Selection" >
+            <apex:pageBlockSection id="pgbsSD">     
+            
+                <apex:pageBlockSectionItem id="pgbsSDI" helpText="This is a list of all the available profiles.  Please select the profile to whichc the permissions need to be viewed">
+            
+                    <apex:outputLabel value="The profile Name : " for="Profile_Name"/>
+            
+                    <apex:selectlist id="Profile_Name" multiselect="false" size="1">
+                        <apex:selectOptions value="{!ProfList}"/>
+                    </apex:selectlist>  
+            
+                </apex:pageBlockSectionItem>            
+            
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons >
+                <input type="button" class="btn" value="View Results" onclick="fBringSelProfile('{!$Component.pgbsSD.pgbsSDI.Profile_Name}');" />
+            </apex:pageBlockButtons>
+                        
+        </apex:pageBlock>   
+        <apex:inputHidden value="{!strExport}" id="TableCSV"/>
+        <apex:actionFunction name="pgTurn" action="{!fpgTurn}" />       
+        
+    </apex:form>
+    <Input type="button" class="btn" value="Extract the contents to CSV" onclick="fextract();"/>
+    <!-- <Input type="button" class="btn" value="Extract the contents to CSV" onclick=""/>-->
+
+    <table id="Per_Details" >
+        <thead >
+            <tr>
+                <th> Object Name</th>
+                <th> Field Name</th>
+                <th> Field Type</th>                
+                <th> Visibility to the Profile</th>
+                <th> Read-Only to the profile</th>
+                <th> System defined Visibility</th>
+                <th> System defined Read-Only</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <div id='prof_Data' class="RLPanelShadow">
+    </div>
+    
+    <div id='Obj_Data' class="RLPanelShadow">
+    </div>      
+
+    <div id='Temp_Area' class="RLPanelShadow">
+    </div>  
+    <script type="text/javascript" LANGUAGE="JavaScript">
+    
+    var X_DIV_ID_PROFPLACE = 'div#prof_Data';       
+    var X_PROFILE_NAME_CLASS = 'X_IFRAME_ID';
+    var X_DIV_FIELD_SECURITY_ID = 'div#head_3_ep';
+    
+    var X_FILL_TEMP = 'div#Temp_Area';
+    var X_TABLE_INPUT = 'table#Per_Details';
+    var sProfileName = '';
+     
+
+    //A custom function since getElementsbyClass of dom object has issues in various browsers
+    function getElementsByClass(node,searchClass,tag) {
+        
+        //Create an array
+        var classElements = new Array();
+        
+        //Get all the elements by tag
+        var els = node.getElementsByTagName(tag); 
+        
+        //Check the length
+        var elsLen = els.length;
+        
+        //Applying the regex Pattern to find the class occurance
+        var pattern = new RegExp("\\b"+searchClass+"\\b");
+        for (i = 0, j = 0; i < elsLen; i++) {
+            if ( pattern.test(els[i].className) ) {
+                classElements[j] = els[i];
+                j++;
+            }
+        }
+        //Return the arrays that meets the search
+        return classElements;
+    }   
+    //Function to move to the page where the profile exists
+    function fBringSelProfile(sProfRefID)   {
+    
+        try {
+
+            var iCount = 0;
+
+            //The Profile ID of the selected proflie
+            var sProfID = document.getElementById(sProfRefID).value;            
+            
+            var sProfPage =     $.ajax({
+                        url: '/' +sProfID,
+                        datatype: 'html',
+                        async: false,
+                        contentType: 'application/x-www-form-urlencoded',
+                        error: function(jqXHR, textStatus, errorThrown) { 
+                            alert("error");
+                            alert(errorThrown); 
+                            alert(jqXHR);
+                            alert(textStatus);
+                        }
+                    }).responseText; 
+            
+            alert(sProfPage);
+
+            $(X_DIV_ID_PROFPLACE).html(sProfPage);
+            $(X_FILL_TEMP).html('');
+            $(X_TABLE_INPUT + ' > tbody').html('');
+            sProfileName = $(X_DIV_ID_PROFPLACE).find(X_PROFILE_NAME_CLASS).text();
+            
+            var html_01 = $(X_DIV_ID_PROFPLACE).find(X_DIV_FIELD_SECURITY_ID).next().html();
+            var html_02 = $(X_DIV_ID_PROFPLACE).find(X_DIV_FIELD_SECURITY_ID).next().next().html();
+            
+            $(X_DIV_ID_PROFPLACE).html(html_01).append(html_02);
+            
+            var oReader = $(X_DIV_ID_PROFPLACE).find("td.labelCol , a");
+
+            for (iCount = 0; iCount < oReader.size()-1; iCount = iCount+2) {
+                            
+            
+                var tmpRegSet_labelCol = new RegExp("labelCol", "g");
+                
+                if(tmpRegSet_labelCol.exec(oReader.get(iCount).className) != null) {
+
+                    fProfileAjax(oReader.get(iCount).innerHTML, oReader.get(iCount+1).href, iCount);
+
+                }
+                else {
+                
+                    throw "Error in parsing the base page - labelCol";
+                }               
+            
+            }
+
+        }
+        catch(e) {
+        
+            alert('Error occurred - ' + e + '. Please contact the administrator.');
+                         
+        }   
+    }
+    //Function to move to the page where the profile exists
+    function fProfileAjax(sObjName, sobjURL, iCount)    {
+    
+        var regURL = new RegExp('flsdetail', "g");
+        
+        sobjURL = sobjURL.replace(regURL, 'flsedit'); 
+        
+        try {
+            
+            var sObjPage =  $.ajax({
+                        url: sobjURL,
+                        datatype: 'text',
+                        async: true,
+                        success: function(data) {
+                            
+                            var sRegSearcher = '<(table[^>]+mainTable[^>]*)>[\\s\\S]*?(</table>)+?';
+                            var regExData = new RegExp(sRegSearcher);
+                            var sRegExData =regExData.exec(data);
+                            var iCounter = 0;
+                            
+                            data = sRegExData[0];
+                            data = data.replace('mainTable','C'+iCount);
+                            $(X_FILL_TEMP).append(data);
+                            
+                            var oFiltered = $('table#C'+iCount).children().children().filter('tr + tr:not(.setupTab) + tr[onClick!=doNothing(event);clearTextSelection();]');                           
+                            
+                            for(iCounter=0; iCounter < oFiltered.size(); iCounter++) {
+                            
+                                var sFieldName = oFiltered.get(iCounter).getElementsByTagName("td")[0].innerHTML;
+                                
+                                var sFieldType = oFiltered.get(iCounter).getElementsByTagName("td")[1].innerHTML;
+                                
+                                var sFieldVisiblity = oFiltered.get(iCounter).getElementsByTagName("td")[2];
+                                
+                                var sFieldRead = oFiltered.get(iCounter).getElementsByTagName("td")[3]; 
+                                
+                                var sFVisi, sFRead, sSVisi, sSRead;
+                                
+                                var objChecker_Visi, objChecker_Read;
+                                
+                                objChecker_Visi = sFieldVisiblity.getElementsByTagName("input");
+                                
+                                if(objChecker_Visi.length != 0) {
+                                
+                                    sSVisi = 'No'; 
+                                    if(sFieldVisiblity.childNodes[0].checked == true) {
+                                        sFVisi = 'Yes';
+                                    }
+                                    else {
+                                        sFVisi = 'No';
+                                    }
+                                }
+                                else {
+                                    sSVisi = 'Yes';
+                                    if(sFieldVisiblity.childNodes[0].alt == 'Checked') {
+                                        sFVisi = 'Yes';
+                                    }
+                                    else {
+                                        sFVisi = 'No';  
+                                    }
+                                }
+                                
+                                objChecker_Read = sFieldRead.getElementsByTagName("input");
+                                if(objChecker_Read.length != 0) {
+
+                                    sSRead = 'No';
+                                    if(sFieldRead.childNodes[0].checked == true) {
+                                        sFRead = 'Yes';
+                                    }
+                                    else {
+                                        sFRead = 'No';  
+                                    }
+                                
+                                }
+                                else {
+
+                                    sSRead = 'Yes';
+                                    if(sFieldRead.childNodes[0].alt == 'Checked') {
+                                        sFRead = 'Yes';
+                                    }
+                                    else {
+                                        sFRead = 'No';  
+                                    }
+                                
+                                }                           
+                            
+                                fAddInTable(sObjName, sFieldName, sFieldType, sFVisi, sFRead, sSVisi, sSRead);
+                            }
+                        }
+                    }); 
+        }
+        catch(e) {
+        
+            alert('Error occurred - ' + e + '. Please contact the administrator.');
+                         
+        }   
+    }   
+    function fAddInTable(sObjName, sFieldName, sFieldType, sFVisi, sFRead, sSVisi, sSRead) {
+    
+        try {
+            var trBuilder = '<tr>';
+            trBuilder = trBuilder + '<td>' + sObjName + '</td>';
+            trBuilder = trBuilder + '<td>' + sFieldName + '</td>';
+            trBuilder = trBuilder + '<td>' + sFieldType + '</td>';
+            trBuilder = trBuilder + '<td>' + sFVisi + '</td>';
+            trBuilder = trBuilder + '<td>' + sFRead + '</td>';
+            trBuilder = trBuilder + '<td>' + sSVisi + '</td>';
+            trBuilder = trBuilder + '<td>' + sSRead + '</td>';
+            trBuilder = trBuilder + '</tr>';
+            
+            $(X_TABLE_INPUT + ' > tbody:last').append(trBuilder);
+        
+        }
+        catch(e) {
+        
+            alert('Error occurred - ' + e + '. Please contact the administrator.');
+                         
+        }   
+    }
+    function fextract() {
+    
+        var strExport =     $('#Per_Details').table2CSV({
+                                delivery:'value',
+                                header:['Object Name','Field Name','Field Type','Visibility to the Profile','Read-Only to the profile','System defined Visibility','System defined Read-Only']
+                            });              
+        
+        var vTemp = document.getElementById('{!$Component.frm.TableCSV}');
+        vTemp.value = strExport;
+        pgTurn();
+    }
+    </script>
+    
+</apex:page>

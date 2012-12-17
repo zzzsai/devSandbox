@@ -1,0 +1,124 @@
+<apex:page standardController="Vacation_Overview__c">
+     
+    <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/FinalCalenderScript.js')}"/> 
+    <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/dom-event.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/Img/globalcss.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.AlertSaaS, 'AlertSaaS/customAlertBox.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AlertSaaS, 'AlertSaaS/Alert_css.css')}"/>
+
+
+
+ <apex:sectionHeader title="Vacation Overview"/>
+  <apex:pageBlock title="Vacation Overview"></apex:pageBlock> 
+  <apex:form >
+   <apex:pageblock title="Vacation Details" >
+   <apex:pageBlockButtons >
+             <apex:commandButton value="Save" action="{!save}"/>         
+             <apex:commandButton value="Cancel" action="{!cancel}"/>                
+         </apex:pageBlockButtons>
+
+         <apex:pageBlockSection collapsible="false" columns="2">
+     
+           <apex:inputField value="{!Vacation_Overview__c.Name}" required="false"/><br/>   
+           <!--<apex:inputField value="{!Vacation_Overview__c.Role_Description__c}" required="true"/><br/>-->
+           <!-- <apex:inputField value="{!Vacation_Overview__c.Focus_Area__c}" required="true"/><br/> -->
+          <!--<apex:inputField value="{!Vacation_Overview__c.Capacity__c}" required="true"/><br/> -->
+           <apex:inputField value="{!Vacation_Overview__c.Start_Date__c}" id="startDate"/>  
+           
+        <apex:image style="position:relative;top:-1px;left:-128px;cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                    onclick="pCalendarObj.show(this, calLocation);" title="Click to view the Calender"
+                    onmouseover="this.style.border='1px outset';"
+                    onmouseout="this.style.border='none'"
+                    id="calendrIcon"/>  
+       <apex:inputField value="{!Vacation_Overview__c.End_Date__c}" id="EndDate"/>
+
+        
+        
+        
+    <!--
+   
+        <apex:outputLabel value="Start Date" style="font-size:11px;font-weight:bold;padding-left:50px;"></apex:outputLabel>
+        <apex:inputText id="startDate" style="position:relative;left:-238px"></apex:inputText>
+         
+       <apex:image style="position:relative;top:-25px;left:290px" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                      onclick="pCalendarObj.show(this, calLocation);" title="Click to view the Calender"/>  <br/>
+       <apex:outputLabel value="End Date" style="font-size:11px;font-weight:bold;padding-left:60px;position:relative;top:-25px"></apex:outputLabel>
+       <apex:inputText id="EndDate" style="position:relative;position:relative;top:-25px;left:-238px"></apex:inputText>    
+ 
+ -->
+           
+ <!-- Script for MultiCalender Functionality-->
+  <script> 
+   
+   var pCalendarObj= null;
+   var calLocation = "548,95";
+       pCalendarObj = new multiDisplayCalendar("corpHomeCalendar", fnGetDate1, fnGetDate2, fnSetInfoToFields);
+
+   var startDate = document.getElementById("{!$Component.startDate}");
+   var EndDate = document.getElementById("{!$Component.EndDate}");
+   
+   
+   
+    function fnSetInfoToFields(pCIDate, pCODate){
+         var startDate = document.getElementById("{!$Component.startDate}");
+         var EndDate = document.getElementById("{!$Component.EndDate}");
+        
+        startDate.value  = getFormatedDate("en", pCIDate);
+        EndDate.value    = getFormatedDate("en", pCODate);
+        
+        //alert("Start Date =" + startDate.value +"\n"+"End Date =" +EndDate.value);
+       
+        
+    }
+    
+    function fnGetDate1() {
+          var startDate = document.getElementById("{!$Component.startDate}");
+          return setDateFromString("en", startDate.value);
+    }
+    function fnGetDate2() {          
+        var EndDate = document.getElementById("{!$Component.EndDate}");
+        return setDateFromString("en", EndDate.value);
+    }
+    
+    document.getElementById("{!$Component.startDate}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDate}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+
+    
+    
+    
+    
+ </script>
+ </apex:pageBlockSection>
+ 
+  </apex:pageblock>
+</apex:form> 
+</apex:page>

@@ -1,0 +1,140 @@
+<apex:page standardController="CapacityDetailEstimator__c">
+
+ 
+  <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/FinalCalenderScript.js')}"/> 
+  <apex:includeScript value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/dom-event.js')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.SaaSPMOCalendar, 'SaaSPMOCalender/Img/globalcss.css')}"/>
+  
+  <apex:includeScript value="{!URLFOR($Resource.AlertSaaSPMO, 'AlertSaaSPMO/customAlertBox.js')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.AlertSaaSPMO, 'AlertSaaSPMO/Alert_css.css')}"/>
+  
+   
+    <apex:sectionHeader title="Capacity Edit" subtitle="New Capacity"/>
+       <apex:form >
+       
+       <div id="prem_hint" style="position:relative; left:100; visibility:hidden" class="prem_hint">
+         </div> 
+            
+            <apex:pageblock title="Capacity Setup"> 
+            
+           
+                  <apex:pageBlockButtons >
+                        <apex:commandButton value="Save" action="{!save}"/>         
+                        <apex:commandButton value="Cancel" action="{!cancel}"/>                
+                  </apex:pageBlockButtons>
+ 
+                  <apex:pageBlockSection collapsible="false" title="Information" columns="2">
+                    
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Name}" required="true"/><br/>    
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Client_Name__c}" required="true"/><br/>
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Project_Name__c}" required="true"/><br/>
+                     <apex:inputField value="{!CapacityDetailEstimator__c.SDate__c}" id="startDate"/>   
+                     <apex:image style="position:relative;top:-1px;left:-128px;cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                                  onclick="pCalendarObj.show(this, calLocation);" title="Click to view the Calender"
+                                  onmouseover="this.style.border='1px outset';"
+                                  onmouseout="this.style.border='none'"
+                                  id="calendrIcon"/>  
+                    
+                      <apex:inputField value="{!CapacityDetailEstimator__c.EDate__c}" id="EndDate"/>
+                       
+
+   
+<!--
+  <apex:outputLabel value="Start Date" style="font-size:11px;font-weight:bold;padding-left:50px;"></apex:outputLabel>
+       <apex:inputText id="startDate" style="position:relative;left:-238px"></apex:inputText>
+             <apex:image style="position:relative;top:-25px;left:290px;cursor: pointer;cursor: hand;" value="{!URLFOR($Resource.SaaSPMOCalendar,'SaaSPMOCalender/Img/icon_calendar.gif')}" 
+                      onclick="pCalendarObj.show(this, calLocation);" title="Click to view the Calender"
+                      onmouseover="this.style.border='1px outset';"
+                      onmouseout="this.style.border='none'"/>  <br/>
+      <apex:outputLabel value="End Date" style="font-size:11px;font-weight:bold;padding-left:60px;position:relative;top:-25px"></apex:outputLabel>
+         <apex:inputText id="EndDate" style="position:relative;position:relative;top:-25px;left:-238px"></apex:inputText>    
+-->
+
+
+ <!-- Script for MultiCalender Functionality-->
+ <script> 
+   
+   var pCalendarObj = null;
+    // var calLocation = "220,-7"; // display Calender location on screen.
+       var calLocation = "548,95";
+       pCalendarObj = new multiDisplayCalendar("corpHomeCalendar", fnGetDate1, fnGetDate2, fnSetInfoToFields);
+
+       var startDate = document.getElementById("{!$Component.startDate}");
+       var EndDate = document.getElementById("{!$Component.EndDate}");
+       
+       
+          
+   
+   document.getElementById("{!$Component.startDate}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){ //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter Start Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter Start Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+   document.getElementById("{!$Component.EndDate}").onkeydown=function(event){
+                     if(navigator.appCodeName == "Mozilla" && navigator.appName == "Netscape"){
+                           while(event.keyCode >= 0 || event.charCode >= 0){     //Disable Keyboard Event for Mozilla & Firefox
+                            alert("Click Calender Icon to Edit or Enter End Date");
+                            return false;
+                         }
+                      }else if(navigator.appName == "Microsoft Internet Explorer"){
+                            
+                            while(window.event.keyCode >= 0 || window.event.charCode >= 0){ //Disable Keyboard Event for MSIE
+                             alert("Click Calender Icon to Edit or Enter End Date");
+                            
+                                                          
+                             return false;
+                           }
+                       } 
+   }
+   
+
+   
+  
+       
+     function fnSetInfoToFields(pCIDate, pCODate){
+        
+         var startDate = document.getElementById("{!$Component.startDate}");
+         var EndDate = document.getElementById("{!$Component.EndDate}");            
+             startDate.value  = getFormatedDate("en", pCIDate);
+             EndDate.value    = getFormatedDate("en", pCODate);
+             
+     }
+    
+    function fnGetDate1() {
+          var startDate = document.getElementById("{!$Component.startDate}");
+          return setDateFromString("en", startDate.value);
+    }
+    function fnGetDate2() {          
+        var EndDate = document.getElementById("{!$Component.EndDate}");
+        return setDateFromString("en", EndDate.value);
+    }
+    
+</script>
+ 
+ 
+ 
+ </apex:pageBlockSection>  
+ 
+ <apex:pageBlockSection collapsible="false" title="Business Case Information" columns="2">
+                    
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Estimated_Program_Cost__c}" required="false"/><br/>    
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Return_on_Investment__c}" required="false"/><br/>
+                     <apex:inputField value="{!CapacityDetailEstimator__c.Years_to_Payout__c}" required="false"/><br/>
+                      
+ </apex:pageBlockSection> 
+ 
+</apex:pageblock>
+</apex:form> 
+</apex:page>

@@ -1,0 +1,115 @@
+<apex:page Standardcontroller="CapacityDetailEstimator__c" extensions="CapacitySummaryNM" tabStyle="CapacityDetailEstimator__c">
+    <apex:sectionHeader title="Program Summary" subtitle="{!CapacityDetail.name}"/>
+    <apex:pageBlock title="Capacity Overview">
+     <apex:form ><center><apex:commandButton value="Edit" action="{!Edit}"/></center></apex:form>
+        <apex:pageBlockSection columns="2">
+       
+            <apex:outputField value="{!CapacityDetail.Name}"/> 
+            <apex:outputField value="{!CapacityDetail.Start_Date__c}"/>
+            <apex:outputField value="{!CapacityDetail.Client_Name__c}"/>
+            <apex:outputField value="{!CapacityDetail.End_Date__c}"/>
+           <!-- <apex:outputField value="{!CapacityDetail.Project_Name__c}"/> -->
+            <apex:outputField value="{!CapacityDetail.Project_Duration__c}"/>
+            <!--<apex:outputField value="{!CapacityDetail.Release__c}"/> -->
+             
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1">
+            <tr align="center" style="background-color:#66BBFF;">
+               <td  colspan="9" > <h1>Program Evaluation</h1></td> </tr>
+            <apex:pageBlockTable value="{!EachPhaseDetail}" var="eachph" style="background-color:CCFFFF">
+                <apex:column > 
+                    <apex:facet name="header"><center><h1>Release</h1></center> </apex:facet>
+                   <center> {!eachph.ProjPhase.Release_del__c}</center>
+                </apex:column>
+                     <apex:column > 
+                        <apex:facet name="header"> <center><h1>Available Capacity (Days)</h1></center></apex:facet>
+                        <center>{!eachph.TotalCapacityValue}</center>
+                    </apex:column>    
+                <apex:column > 
+                    <apex:facet name="header"><center><h1>Assigned Scope (LOE Days)</h1></center></apex:facet>
+                    <div style="background-color:{!eachph.cellcolor};align=center"> <center> {!eachph.TotalEstimateValue}</center> </div>
+                </apex:column>  
+             <!--   <apex:column > 
+                    <apex:facet name="header"># of Rqmt Candidates</apex:facet>
+                    <div> &nbsp; </div>
+                </apex:column>  
+                <apex:column> 
+                    <apex:facet name="header"># Rqmts Estimated</apex:facet>
+                    <div> &nbsp; </div>
+                </apex:column>   
+                <apex:column > 
+                    <apex:facet name="header">% Rqmts Estimated</apex:facet>
+                    <div> &nbsp; </div>
+                </apex:column> 
+                -->                                                                           
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <apex:pageBlock ><apex:form >
+        <apex:pageBlockSection columns="1">
+            <apex:repeat value="{!EachPhaseDetail}" var="EachPhase">
+                <table border="1" width="100%" style="background-color:#FFFFEE;border-color: #707070;border-style: solid;" cellspacing="0">
+                       <!--<caption><h1>Program Summary</h1> - {!EachPhase.ProjPhase.Name}</caption> -->
+                    <tr align="center" style="background-color:#7CCD7C;">
+                      <td style="border-color: #707070;border-style: solid;" colspan="9"><h1>Program Summary - {!EachPhase.ProjPhase.Release_del__c}</h1></td>
+                      <td style="border-color: #707070;border-style: solid;"><h1><apex:commandLink value="Edit" action="{!editpage}">
+                          <apex:param name="phaseid" value="{!EachPhase.ProjPhase.id}"/>
+                       </apex:commandLink></h1></td>
+                   </tr>
+                    <tr>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;" rowspan="2" align="center"><h1>Development Team</h1></td>
+                        <!--<td rowspan="2"valign="middle" align="center"><center><h1>Focus Area</h1></center> </td> -->
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Plan__c}</center></td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Design__c}</center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Build__c}</center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Test__c}</center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.UAT__c}</center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Deploy__c}</center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!EachPhase.ProjPhase.Adapt_Ongoing_Support__c}</center> </td>
+                      
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center><h1>Plan</h1></center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>Design</h1></center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>Build</h1></center></td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>Test</h1></center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>UAT</h1></center> </td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center><h1>Deploy</h1></center></td>
+                        <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center><h1>Adapt &amp; Ongoing Support</h1></center></td>                       
+                        
+                       
+                    </tr>  
+                    <apex:repeat value="{!EachPhase.rdet}" var="rdetail">
+                        <tr>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.RoleNames}</center> </td>
+                           <!-- <td> <center>{!rdetail.FocusArea}</center> </td> -->                 
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.Plan}</center> </td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.Design}</center></td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.Build}</center> </td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.Test}</center> </td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.UAT}</center> </td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.Deploy}</center> </td>
+                            <td style="vertical-align: middle;border-color: #707070;border-style: solid;"> <center>{!rdetail.AOS}</center> </td>
+                                             
+                        </tr>
+                    </apex:repeat>
+                     <tr style="background-color: #F0F0F0;">
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>Total(#Days)</h1></center></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_Plan}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_Design}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_Build}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_Test}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_UAT}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_Deploy}</h1></td></center>
+                         <td style="vertical-align: middle;border-color: #707070;border-style: solid;"><center><h1>{!EachPhase.T_AOS}</h1></td></center>                      
+                  </tr>
+                </table>
+                <br/>           
+            </apex:repeat>        
+        </apex:pageBlockSection></apex:form>
+    </apex:pageBlock>
+    
+</apex:page>

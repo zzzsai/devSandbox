@@ -1,0 +1,74 @@
+<apex:page standardController="Release_Estimation__c" extensions="detailestimator" tabStyle="Release_Estimation__c">
+    <apex:form >
+        <apex:pageblock >
+         <apex:messages id="ErrMsg" style="color:red" />
+        
+            <apex:pageBlockSection collapsible="false" title="{!EstimateName.Name} Summary">
+            </apex:pageBlockSection>  
+           <apex:pageBlockTable value="{!EstDetail}" var="row" style="background-color:rgb(255,255,255);" columnswidth="30px,30px" cellpadding="2" width="100%"  border="0">
+              <apex:column width="4%">
+                  <apex:facet name="header"><center>Delete</center> </apex:facet>
+                  <apex:inputCheckbox value="{!row.selected}" id="checkedone"/>
+              </apex:column>    
+              <apex:column width="22%">
+                  <apex:facet name="header">Requirement Name</apex:facet>
+                  <apex:outputText value="{!row.reqt.Requirement_id__r.Requirement_Title__c}"></apex:outputText>
+                  <apex:facet name="footer">Total</apex:facet>
+              </apex:column>
+              <apex:column width="8%">
+                 <apex:facet name="header"><center>Contingency</center></apex:facet>
+                 <center><apex:outputText >{!row.reqt.Contingency__c}%</apex:outputText></center>
+                 <apex:facet name="footer"><center>--</center></apex:facet>
+             </apex:column>
+             <apex:column width="8%">
+                 <apex:facet name="header"><center>Plan</center></apex:facet>
+                 <center><apex:outputText value="{!row.reqt.Plan__c}"></apex:outputText></center>
+                 <apex:facet name="footer"><center>{!TotalValList.total_plan__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>Design</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.Design__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.total_design__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>Build</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.Build__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.total_build__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>Test</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.Test__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.total_test__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>UAT</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.UAT__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.total_UAT__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>Deploy</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.Deploy__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.total_deploy__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%" >
+                <apex:facet name="header"><center>Adapt and Ongoing Support</center></apex:facet>
+                <center><apex:outputText value="{!row.reqt.Adapt_and_Ongoing_Support__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.Total_Adapt__c}</center></apex:facet>
+            </apex:column>
+            <apex:column width="8%">
+                <apex:facet name="header"><center>Total(Days)</center></apex:facet>
+                <center> <apex:outputText value="{!row.reqt.Row_Total__c}"></apex:outputText></center>
+                <apex:facet name="footer"><center>{!TotalValList.TotalOfTotal__c}</center></apex:facet>
+            </apex:column>
+    </apex:pageBlockTable>
+    <apex:pageBlockButtons location="top">
+        <apex:commandButton value="Remove Selected Requirement(s)" action="{!DelReq}" disabled="{!IsDelReq}"/>
+        <apex:commandButton value="Cancel and Return" action="{!gototab}"/><br></br>
+    </apex:pageBlockButtons>
+    <apex:pageBlockButtons location="bottom">
+        <apex:commandButton value="Modify Estimate Details" action="{!editEst}" disabled="{!IsEstVal}"/> 
+        <apex:commandButton value="Add New Requirement" action="{!addReq}"/> 
+   </apex:pageBlockButtons>
+  </apex:pageblock>
+ </apex:form>  
+</apex:page><!--PMT2009__ 1 occurences replaced by blank-->

@@ -1,0 +1,43 @@
+<apex:page standardController="Holiday_Assignment__c" extensions="Holiday_Ext" id="thisPage">
+    <apex:sectionHeader title="Holiday Assignment"/>
+        <apex:form >
+           <apex:pageblock > 
+                 <apex:pageBlockButtons >
+                      <apex:commandButton value="Save" action="{!save}"/>         
+                      <apex:commandButton value="Cancel" action="{!cancel}"/>                
+                 </apex:pageBlockButtons>
+              <apex:pageBlockSection collapsible="false" columns="1" >
+ <apex:pageBlockSectionItem >
+   <apex:outputLabel value="Holiday" ></apex:outputLabel> 
+      <apex:outputPanel styleClass="requiredInput" layout="block">
+      <apex:outputPanel styleClass="requiredBlock" layout="block"/> 
+         <apex:selectList value="{!selectedVal}"  multiselect="false" size="1">
+            <apex:selectOptions value="{!Holiday}"></apex:selectOptions>
+            <apex:actionSupport event="onchange" action="{!setHoliday}"/>
+         </apex:selectList>
+   </apex:outputPanel>
+ </apex:pageBlockSectionItem> <br/> 
+ <apex:pageblockSectionItem >
+    <apex:outputLabel value="Role Description" for="Role Description"/>
+        <apex:outputPanel styleClass="requiredInput" layout="block">
+        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+            <apex:selectList value="{!roleDescription}" size="1" id="roleDescription">
+                <apex:selectOptions value="{!roleDes}"/>
+                <apex:actionSupport event="onchange" action="{!setRoleDes}" rerender="releaseAssgns"/>
+            </apex:selectList>
+        </apex:outputPanel>
+ </apex:pageblockSectionItem><br/>
+    <apex:pageblockSectionItem >
+      <apex:outputLabel value="Release Assignment" for="Release Assignment"/>
+        <apex:outputPanel styleClass="requiredInput" layout="block">
+        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+            <apex:selectList value="{!releaseAssignment}" size="1" id="releaseAssgns">
+              <apex:selectOptions value="{!releaseAssgns}"/>
+              <apex:actionSupport event="onchange" action="{!setRelAssgn}" />
+            </apex:selectList>
+        </apex:outputPanel>
+ </apex:pageblockSectionItem>
+ </apex:pageBlockSection>
+ </apex:pageblock>
+</apex:form>   
+</apex:page>

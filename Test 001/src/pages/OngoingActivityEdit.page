@@ -1,0 +1,34 @@
+<apex:page standardController="Ongoing_Activity__c" id="thisPage">
+
+  <apex:sectionHeader title="Ongoing Activity Edit" subtitle="New Ongoing Activity"/>
+  <apex:form >
+    <apex:pageblock title="Ongoing Activity Edit"> 
+         
+         <apex:pageBlockButtons >
+             <apex:commandButton value="Save" action="{!save}"/>         
+             <apex:commandButton value="Cancel" action="{!cancel}"/>                
+         </apex:pageBlockButtons>
+ 
+        <apex:pageBlockSection collapsible="false" title="Ongoing Activity Details" columns="1">
+           <apex:inputField value="{!Ongoing_Activity__c.Ongoing_Activites__c}"/>
+            
+      <!-- <apex:inputField value="{!Ongoing_Activity__c.Project_Assignment__c}" required="true"/> 
+           <apex:inputField value="{!Ongoing_Activity__c.Role_Description__c}" required="true"/> 
+           <apex:inputField value="{!Ongoing_Activity__c.Focus_Area__c}" required="true"/>
+           <apex:inputField value="{!Ongoing_Activity__c.Capacity__c}" required="true"/> -->
+        </apex:pageBlockSection>  
+
+       <apex:pageBlockSection collapsible="false" title="Ongoing Activity Days" columns="2">
+      
+           <apex:inputField value="{!Ongoing_Activity__c.Plan__c}" />
+            <apex:inputField value="{!Ongoing_Activity__c.Design__c}"/>
+            <apex:inputField value="{!Ongoing_Activity__c.Build__c}"/>
+            <apex:inputField value="{!Ongoing_Activity__c.Test__c}"/>
+            <apex:inputField value="{!Ongoing_Activity__c.UAT__c}"/>
+            <apex:inputField value="{!Ongoing_Activity__c.Deploy__c}"/>
+            <apex:inputField value="{!Ongoing_Activity__c.Adapt_Ongoing_Support__c}"/>
+       </apex:pageBlockSection>
+
+</apex:pageblock>
+</apex:form>   
+</apex:page>

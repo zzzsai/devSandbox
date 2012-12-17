@@ -1,0 +1,39 @@
+<apex:page standardController="Role_Allocation__c">
+     
+ <apex:sectionHeader title="Role Allocation Edit" subtitle="New Role Allocation"/>
+  <apex:form >
+   <apex:pageblock title="Role Allocation"> 
+         <apex:pageBlockButtons >
+             <apex:commandButton value="Save" action="{!save}"/>         
+             <apex:commandButton value="Cancel" action="{!cancel}"/>                
+         </apex:pageBlockButtons>
+ 
+ <apex:pageBlockSection collapsible="false" title="Role Detail" columns="2">
+     
+   <apex:inputField value="{!Role_Allocation__c.Name}" required="true"/><br/>
+  <!--<apex:inputField value="{!Role_Allocation__c.Role_Description__c}" required="false"/><br/>--> 
+   <!-- <apex:inputField value="{!Role_Allocation__c.Project_Assignment__c}" required="true"/><br/> 
+  <apex:inputField value="{!Role_Allocation__c.Focus_Area__c}" required="true"/><br/> -->    
+  <apex:inputField value="{!Role_Allocation__c.Capacity__c}" required="true"/><br/>
+ </apex:pageBlockSection> 
+ 
+ <apex:pageBlockSection collapsible="false" title="Allocation" columns="2">
+   <apex:inputField value="{!Role_Allocation__c.Plan__c}"/><br/>       
+   <apex:inputField value="{!Role_Allocation__c.Design__c}"/><br/>
+   <apex:inputField value="{!Role_Allocation__c.Build__c}"/><br/> 
+   <apex:inputField value="{!Role_Allocation__c.Test__c}"/><br/>       
+   <apex:inputField value="{!Role_Allocation__c.UAT__c}"/><br/>
+   <apex:inputField value="{!Role_Allocation__c.Deploy__c}"/><br/> 
+   <apex:inputField value="{!Role_Allocation__c.Adapt_Ongoing_Support__c}"/><br/> 
+    
+ </apex:pageBlockSection>   
+
+ 
+   
+</apex:pageblock>
+
+
+
+
+</apex:form> 
+</apex:page>

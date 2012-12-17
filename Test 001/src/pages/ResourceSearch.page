@@ -1,0 +1,101 @@
+<apex:page standardController="RoleSetup__c" extensions="Search" id="pageId">
+<apex:form id="formId">
+<apex:inputHidden value="{!Error}" id="error" />
+<!--<apex:outputText value="{!Error}" id="error" />-->
+<apex:pageMessages />
+<script>
+function checkAll(cb)
+{
+   var inputElem = document.getElementsByTagName("input");
+   for(var i=0;i<inputElem.length;i++)
+     {
+             if(inputElem[i].id.indexOf("selectLine1")!=-1)
+                   inputElem[i].checked = cb.checked;
+      }
+}
+
+function RefreshPage(){
+ var mesg = document.getElementById('{!$Component.pageId.formId.error}').value;
+ alert('Error!! '+mesg);
+ window.location.reload();
+}
+
+</script>
+
+<apex:pageBlock title="Resource Search">
+
+<apex:pageBlockButtons >
+    <apex:commandButton value="Cancel" action="{!cancel}"/>
+    <apex:commandButton value="Add Resource" action="{!add}" reRender="error" onComplete="RefreshPage()" />
+</apex:pageBlockButtons>
+
+ <!--<apex:pagemessage strength="2" title="Error!!" severity="error" Summary="Contacts for this Role Summary can not be greater than - {!RoleSetup__c.No_of_Resources__c}"  rendered="{!errormsg}"/>-->
+<apex:pageBlockSection title="Role Summary Detail" columns="2">
+    <apex:outputField value="{!RoleSetup__c.Role__c}"/>
+    <apex:outputField value="{!RoleSetup__c.Start_Date__c}"/>    
+    <apex:outputField value="{!RoleSetup__c.Name}"/>
+    <apex:outputField value="{!RoleSetup__c.End_Date__c}"/>
+    <apex:outputField value="{!RoleSetup__c.Onshore_Offshore__c}"/>
+    <apex:outputField value="{!RoleSetup__c.No_of_Resources__c}"/>
+<apex:pageblockSectionItem >
+      <apex:outputLabel value="Release Assignment" for="Release Assignment"/>
+        <apex:outputPanel styleClass="requiredInput" layout="block">
+        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+            <apex:selectList value="{!releaseAssignment}" size="1" id="releaseAssgns">
+              <apex:selectOptions value="{!releaseAssgns}"/>
+              <apex:actionSupport event="onchange" action="{!setRelAssgn}" reRender="error"  />
+            </apex:selectList>
+        </apex:outputPanel>
+ </apex:pageblockSectionItem>
+
+</apex:pageBlockSection>
+
+
+
+<apex:pageBlockSection title="Skills Information" >
+    <apex:outputField value="{!RoleSetup__c.Expert_Skills__c}"/>
+    <apex:outputField value="{!RoleSetup__c.Secondary_Skills__c}"/>
+</apex:pageBlockSection>
+
+
+ <apex:pageBlockSection >
+           <tr align="left" style="background-color:#CCCCCC;">
+              <td  colspan="9" ><h1>Resource Matches</h1></td></tr>
+            <apex:pageBlockTable value="{!results}" var="roledetails">
+                  <apex:column style="background-color:#E9E9E9;" > 
+                    <apex:facet name="header"><center><h1>Resource Name</h1></center> </apex:facet>
+                   <center>{!roledetails.con.Name}</center>
+                </apex:column>
+                   <apex:column style="background-color:#E9E9E9;" > 
+                        <apex:facet name="header"><center><h1>Expert Skills</h1></center></apex:facet>
+                        <center>{!roledetails.con.Expert_Skills__c}</center>
+                    </apex:column>  
+             <apex:column style="background-color:#E9E9E9;" > 
+                    <apex:facet name="header"><center><h1>Secondary Skills</h1></center></apex:facet>
+                     <center> {!roledetails.con.Secondary_Skills__c}</center>
+                </apex:column>  
+               
+                 <apex:column style="background-color:#E9E9E9;"> 
+                    <apex:facet name="header"><center><h1>Onshore/Offshore</h1></center></apex:facet>
+                   <center>{!roledetails.con.Offshore_Onshore__c}</center>
+                </apex:column>  
+                
+                <apex:column style="background-color:#E9E9E9;"> 
+                    <apex:facet name="header"><center><h1>Program</h1></center></apex:facet>
+                    <center>{!roledetails.programName}</center>
+                </apex:column>
+                 <apex:column style="background-color:#E9E9E9;" > 
+                   <apex:facet name="header"><center><h1>Available</h1></center></apex:facet>
+                    <div style="background-color:{!roledetails.cellcolor};align=center">{!roledetails.sp}</div>
+                </apex:column>
+                
+                <apex:column style="background-color:#E9E9E9;">
+                    <apex:facet name="header"><Center><h1>Select</h1> </Center></apex:facet> 
+                    <!--<apex:inputCheckbox onclick="checkAll(this)"/>-->
+                   <center><apex:inputCheckbox value="{!roledetails.selected}" id="selectLine1"/></center>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

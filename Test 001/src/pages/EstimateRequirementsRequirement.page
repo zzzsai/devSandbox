@@ -1,0 +1,58 @@
+<apex:page extensions="requirementEffortDetails" standardController="Requirement__c">
+
+<apex:form >
+<apex:messages id="ErrMsg" style="color:red" />
+
+<table width="100%" height="122" border="0" cellpadding="0" bordercolor="#E7DFBD" bgcolor="#F7F3EF">
+
+<tr>
+
+<td width="15%"  align="center"><b>Plan</b></td>
+
+<td width="20%" align="left"><apex:outputText value="{!requirement_gathering}"></apex:outputText></td>
+
+<td width="15%" align="center"><b>UAT</b></td>
+
+<td width="20%" align="left"><apex:outputText value="{!uat}"></apex:outputText></td>
+
+</tr>
+
+<tr>
+
+<td width="15%"  align="center"><b>Design</b></td>
+
+<td width="20%" align="left"><apex:outputText value="{!design}"></apex:outputText></td>
+
+<td width="25%" align="center"><b>Deploy</b></td>
+
+<td width="25%" align="left"><apex:outputText value="{!traindep}"></apex:outputText></td>
+
+</tr>
+
+<tr>
+
+<td width="25%" align="center"><b>Build</b> </td>
+
+<td width="25%" align="left"><apex:outputText value="{!but}"></apex:outputText></td>
+
+<td width="15%" align="center"><b>Adapt and Ongoing Support</b></td>
+
+<td width="15%" align="left"><apex:outputText value="{!adapt}"></apex:outputText></td>
+
+</tr>
+
+<tr>
+
+<td width="25%" align="center"><b>Test</b></td>
+
+<td width="25%" align="left"><apex:outputText value="{!sit}"></apex:outputText></td>
+
+<td width="25%" align="center"><b>Total Estimate</b></td>
+
+<td width="25%" align="left"><table border="1"><td><apex:outputText ><b>{!total}</b></apex:outputText></td></table></td>
+</tr>
+</table> 
+ 
+</apex:form>
+
+</apex:page>

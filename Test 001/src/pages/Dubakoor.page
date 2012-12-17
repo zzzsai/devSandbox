@@ -1,0 +1,13 @@
+<apex:page Controller="csvController">
+   <apex:pageBlock title="Hello {!$User.FirstName}!">
+   </apex:pageBlock>
+   <apex:pageBlock title="CSV Table">
+         <apex:pageBlockTable value="{!list1}" var="contact">
+         <apex:column headerValue="FirstName" value="{!contact.FirstName}"/>
+         <apex:column headerValue="MiddleName" value="{!contact.MiddleName}"/>
+         <apex:column headerValue="LastName" value="{!contact.LastName}"/>
+         <apex:column headerValue="City" value="{!contact.City}"/>
+         <apex:column headerValue="Zip" value="{!contact.Zip}"/>
+      </apex:pageBlockTable>
+   </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,97 @@
+<apex:page standardController="Project_Phase__c" id="thisPage">
+    <apex:pageBlock >
+        <!-- <apex:pageBlockSection collapsible="false" title="Project Phase Dates" columns="1">
+            <apex:panelGrid columns="3" id="Grid" bgcolor="#98CCC" border="1" width="670" 
+                            captionStyle="word-spacing:100px;background-color:#D6D6C2;">
+                  
+                     <apex:facet name="caption"><B>
+                          <span style="word-spacing:3px;position:relative;left:150px"> Start Date </span> &nbsp; 
+                           <span style="word-spacing:3px;position:relative;left:70px;top:1px"> End Date </span> </B>
+                     </apex:facet> 
+                  
+                  <B> Plan :</B>
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.Plan_Start_Date__c),"-", Project_Phase__c.Plan_Start_Date__c)}</apex:outputText> 
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.Plan_End_Date__c),"-", Project_Phase__c.Plan_End_Date__c)} </apex:outputText>                   
+    
+               <B> Design :</B> 
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.Design_Start_Date__c),"-", Project_Phase__c.Design_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.Design_End_Date__c),"-", Project_Phase__c.Design_End_Date__c)} </apex:outputText>                              
+                     
+               <B> Build :</B> 
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.Build_Start_Date__c),"-", Project_Phase__c.Build_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.Build_End_Date__c),"-", Project_Phase__c.Build_End_Date__c)} </apex:outputText>                                               
+    
+                 <B> Test :</B>
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.Test_Start_Date__c),"-", Project_Phase__c.Test_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.Test_End_Date__c),"-", Project_Phase__c.Test_End_Date__c)} </apex:outputText>
+    
+                 <B> UAT :</B>
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.UAT_Start_Date__c),"-", Project_Phase__c.UAT_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.UAT_End_Date__c),"-", Project_Phase__c.UAT_End_Date__c)} </apex:outputText>                  
+                
+                 <B> Deploy :</B>
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.Deploy_Start_Date__c),"-", Project_Phase__c.Deploy_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.Deploy_End_Date__c),"-", Project_Phase__c.Deploy_End_Date__c)} </apex:outputText>                                       
+    
+                <B> Adapt and<br/> Ongoing Support :</B>
+                     <apex:outputText >{!IF(ISBLANK(Project_Phase__c.AOS_Start_Date__c),"-", Project_Phase__c.AOS_Start_Date__c)}</apex:outputText>
+                     <apex:outputText > {!IF(ISBLANK(Project_Phase__c.AOS_End_Date__c),"-", Project_Phase__c.AOS_End_Date__c)} </apex:outputText>                       
+            </apex:panelGrid>
+        </apex:pageBlockSection> -->
+        
+        <apex:pageBlockSection collapsible="false" title="Project Phase Dates" columns="1">
+            <table width="80%" border ="1">
+                <tr style="background-color:#D6D6C2;">
+                    <th width="40%"> &nbsp; </th>
+                    <th width="20%"> Start Date </th>
+                    <th width="20%"> End Date </th>
+                    <th width="20%"> <div align="center"> Days </div> </th>
+                </tr>            
+                <tr>
+                    <td> <b> Plan : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Plan_Start_Date__c),"-", Project_Phase__c.Plan_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Plan_End_Date__c),"-", Project_Phase__c.Plan_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {! ROUND(Project_Phase__c.Plan_Days__c,0) } </div> </td>
+                </tr>  
+                <tr>
+                    <td> <b> Design : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Design_Start_Date__c),"-", Project_Phase__c.Design_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Design_End_Date__c),"-", Project_Phase__c.Design_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {! ROUND(Project_Phase__c.Design_Days__c,0)} </div> </td>
+                </tr>
+                <tr>
+                    <td> <b> Build : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Build_Start_Date__c),"-", Project_Phase__c.Build_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Build_End_Date__c),"-", Project_Phase__c.Build_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {!ROUND(Project_Phase__c.Build_Days__c,0)} </div> </td>
+                </tr>                                 
+                <tr>
+                    <td> <b> Test : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Test_Start_Date__c),"-", Project_Phase__c.Test_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Test_End_Date__c),"-", Project_Phase__c.Test_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {!ROUND(Project_Phase__c.Test_Days__c,0)} </div> </td>
+                </tr>     
+                <tr>
+                    <td> <b> UAT : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.UAT_Start_Date__c),"-", Project_Phase__c.UAT_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.UAT_End_Date__c),"-", Project_Phase__c.UAT_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {!ROUND(Project_Phase__c.UAT_Days__c,0)} </div> </td>
+                </tr> 
+                <tr>
+                    <td> <b> Deploy : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Deploy_Start_Date__c),"-", Project_Phase__c.Deploy_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.Deploy_End_Date__c),"-", Project_Phase__c.Deploy_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {!ROUND(Project_Phase__c.Deploy_Days__c,0)} </div> </td>
+                </tr>                                            
+                <tr>
+                    <td> <b> Adapt and Ongoing Support : </b> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.AOS_Start_Date__c),"-", Project_Phase__c.AOS_Start_Date__c)}</div> </td>
+                    <td> <div> {!IF(ISBLANK(Project_Phase__c.AOS_End_Date__c),"-", Project_Phase__c.AOS_End_Date__c)} </div> </td>
+                    <td align="center"> <div> {!ROUND(Project_Phase__c.AOS_Days__c,0)} </div> </td>
+                </tr>                
+            </table>        
+        </apex:pageBlockSection>
+        <br/>
+    </apex:pageblock>
+   
+</apex:page>

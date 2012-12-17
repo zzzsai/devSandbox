@@ -1,0 +1,50 @@
+<apex:page tabstyle="Release_Estimation__c" controller="detailestimator">
+    <apex:form id="myForm">
+        <apex:pageblock id="myBlock1">
+            <apex:pageBlockSection title="Requirement Criteria" collapsible="false" id="sec1">
+                <apex:pageBlockSectionItem id="secItem1">
+                    <b>Requirement Title</b><apex:inputtext value="{!requirement01.Requirement_Title__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!requirement01.Release__c}"/>
+                <apex:inputField value="{!requirement01.Request_Type__c}"/>
+                <apex:inputField value="{!requirement01.System_Impacted__c}"/>
+                <apex:inputField value="{!requirement01.Status__c}"/>
+           </apex:pageBlockSection>
+           <apex:pageBlockSection columns="1" title="Work Assignment Criteria" collapsible="false" id="sec2">
+                <apex:inputField value="{!workassign01.Assignment__c}"/> 
+                <apex:inputField value="{!workassign01.Name__c}"/>
+                <apex:inputField value="{!workassign01.Progress__c}"/>
+           </apex:pageBlockSection>
+           <table border="0" width="100%" height="100%">
+                <tr>
+                    <td width="30%" height="30" align="center">
+                        <apex:commandButton action="{!search}" value="Search" rerender="sec3"/>
+                    </td>
+                </tr>
+           </table>
+           <apex:pageBlockSection title="Requirements Search Result" collapsible="false" columns="1" id="sec3">
+               <apex:messages id="ErrMsg" style="color:red" />
+                <apex:dataTable value="{!Searchreq}" var="Ser" first="{!nextvalue}" rows="{!displaynum }" columnswidth="50px,50px" cellpadding="4" border="0">
+                    <apex:column >
+                        <apex:facet name="header"> Estimate </apex:facet>
+                        <apex:inputCheckbox value="{!Ser.checked}" id="rdcheckedone"> </apex:inputCheckbox>
+                    </apex:column>
+                    <apex:column headervalue="Requirement ID" value="{!Ser.reqObj.Name}" />
+                    <apex:column headervalue="Requirement Title " value="{!Ser.reqObj.Requirement_Title__c}" />
+                    <apex:column headervalue="Request Type" value="{!Ser.reqObj.Request_Type__c}" />
+                    <apex:column headervalue="Release" value="{!Ser.reqObj.Release__r.name}" />                    
+                    <apex:column headervalue="Level of Effort" value="{!Ser.reqObj.Level_of_Effort_Value__c}" />          
+                    <apex:column headervalue="Status" value="{!Ser.reqObj.Status__c}" />                              
+               </apex:dataTable>
+               <apex:pageBlockSectionItem dataStyle="height:20px;" > 
+                    <apex:commandLink action="{!OnClickPrevious}" value="Previous" rendered="{!ifpreviousLink }" />
+                    <apex:commandLink action="{!OnClickNext}" value="Next" rendered="{!ifnextLink}" style="position:absolute; right:50px;" />                        
+               </apex:pageBlockSectionItem>                      
+         </apex:pageBlockSection>
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton value="Add Selected Requirement(s) to Estimate" action="{!estimateSelected}"/>
+            
+       </apex:pageBlockButtons>
+       </apex:pageBlock>
+  </apex:form>
+</apex:page>
