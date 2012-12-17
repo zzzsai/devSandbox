@@ -5,6 +5,7 @@
 <apex:includescript value="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" />
 <apex:includescript value="http://yui.yahooapis.com/2.6.0/build/dragdrop/dragdrop-min.js" />
 <apex:includescript value="http://yui.yahooapis.com/2.6.0/build/container/container-min.js"/>
+<!--  <apex:includescript value="http://yui.yahooapis.com/2.6.0/build/animation/animation-min.js"/>-->
 <apex:includescript value="http://yui.yahooapis.com/2.6.0/build/animation/animation-min.js"/>
  
 <script>
