@@ -9,7 +9,7 @@
   <apex:stylesheet value="{!URLFOR($Resource.AlertSaaSPMO, 'AlertSaaSPMO/Alert_css.css')}"/>
   
    
-    <apex:sectionHeader title="Capacity Edit" subtitle="New Capacity"/>
+    <apex:sectionHeader title="Capacity Edit" subtitle="New Capacity Test"/>
        <apex:form >
        
        <div id="prem_hint" style="position:relative; left:100; visibility:hidden" class="prem_hint">
