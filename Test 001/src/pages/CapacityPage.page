@@ -1,6 +1,7 @@
 <apex:page standardController="Capacity__c" extensions="Capacity" label="Identified Requirements for the Release" sidebar="true"  >  
 <style> body { background-color:#EAEAE1; } </style>     
 <apex:form > 
+<!--  Edited by Kiran -->
 <!-- <apex:detail relatedList="false" title="true"/> -->
     <!-- <apex:pageBlock title="Release Output">     -->
     <apex:pageBlock >   
