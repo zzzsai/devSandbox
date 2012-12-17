@@ -1,7 +1,7 @@
 <apex:page standardController="Release_Estimation__c" extensions="detailestimator" tabStyle="Release_Estimation__c">
     <apex:form >
         <apex:pageblock >
-         <apex:messages id="ErrMsg" style="color:red" />
+         <apex:messages id="ErrMsgTest" style="color:red" />
         
             <apex:pageBlockSection collapsible="false" title="{!EstimateName.Name} Summary">
             </apex:pageBlockSection>  
