@@ -1,6 +1,17 @@
+/*
+
+Kiran
+
+*/
+
 public class CapacitySummaryNM
 {
     private String id ;
+    
+    
+    //test
+    private string test;
+    
     private CapacityDetailEstimator__c capSetobj = new CapacityDetailEstimator__c();
     private List<WaveDetailCls> WavePhaseslst = new List<WaveDetailCls>();        
     private List <Allocation_Assignment__c> RoleAlloc;

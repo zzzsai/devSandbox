@@ -1,3 +1,10 @@
+/*
+
+Test Kiran
+
+*/
+
+
 public class Capacity 
 {
     List<Capacity__c> VarCapacity ;
@@ -10,6 +17,9 @@ public class Capacity
     List <Release_Capacity__c> availableCap ;    
     Boolean CapAvailable = false;
     String currURL;
+    
+    //Test Kiran
+    Double Kiran	=	0;
     
     Double TotalPlan = 0.0;
     Double TotalDesign = 0.0;    
